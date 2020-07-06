@@ -1,5 +1,6 @@
 mod game;
 mod hero;
+mod components;
 
 use game::Game;
 

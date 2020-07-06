@@ -1,20 +1,16 @@
-mod status;
-
-// use std::io::{ stdin };
 use crate::hero::Hero;
-use status::GameStatus;
-use dialoguer::Select;
+use crate::components::Global;
 use console::Term;
 
 pub struct Game {
   hero: Hero,
-  status: GameStatus
+  status: Global
 }
 
 impl Game {
   pub fn new() -> Game {
     let hero: Hero = Default::default();
-    let status: GameStatus = Default::default();
+    let status: Global = Default::default();
 
     Game { hero, status }
   }
@@ -23,34 +19,9 @@ impl Game {
     println!("Добро пожаловать в зону");
 
     loop {
-      match self.status {
-        GameStatus::RootMenu => self.root_menu(),
-        GameStatus::StartNewGame => self.create_new_hero(),
-        GameStatus::LoadGameMenu => (),
-        GameStatus::Game => ()
-      }
-      Term::stdout().clear_screen().expect("Ошибка");
+      // self.status.run();
+      Term::stdout().clear_screen().expect("Ошибка отчистки экрана");
       println!("{:?}", self.status);
-    }
-  }
-
-  fn root_menu(&mut self) {
-    let items = [
-      "Новая игра",
-      "Загрузить сохранение"
-    ];
-
-    let index: usize = Select::new()
-      .with_prompt("Меню")
-      .items(&items)
-      .default(0)
-      .interact()
-      .expect("Ошибка выбора пункта меню");
-
-    match index {
-      0 => self.status = GameStatus::StartNewGame,
-      1 => self.status = GameStatus::LoadGameMenu,
-      _ => ()
     }
   }
 
