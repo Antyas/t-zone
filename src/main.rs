@@ -1,10 +1,9 @@
-mod game;
-mod hero;
-mod components;
+mod core;
 
-use game::Game;
+use crate::core::{ Game, GameState };
 
 fn main() {
-  let mut game = Game::new();
+  let mut state = GameState::new();
+  let mut game = Game::new(&mut state);
   game.start();
 }

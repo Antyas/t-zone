@@ -1,5 +1,8 @@
-mod global;
 mod main_menu;
 
-pub use global::Global;
 pub use main_menu::MainMenu;
+use crate::objects::Game;
+
+pub trait Component {
+  fn run(&mut self, game: &mut Game);
+}

@@ -6,19 +6,15 @@ pub struct Hero {
 }
 
 impl Hero {
-  pub fn create() -> Hero {
-    Hero {
-      name: Hero::read_name()
-    }
+  pub fn init(&mut self) {
+    self.read_name();
   }
 
-  fn read_name() -> String {
-    let name: String = Input::new()
+  fn read_name(&mut self) {
+    self.name = Input::new()
       .with_prompt("Имя персоонажа")
       .interact()
       .expect("Ошибка заполнения имени");
-
-    name
   }
   
 }
