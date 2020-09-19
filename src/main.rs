@@ -1,9 +1,10 @@
+mod component;
 mod core;
+mod entity;
 
-use crate::core::{ Game, GameState };
+use crate::core::{Game, Store};
 
 fn main() {
-  let mut state = GameState::new();
-  let mut game = Game::new(&mut state);
-  game.start();
+  let mut store = Store::new();
+  Game::start(&mut store);
 }

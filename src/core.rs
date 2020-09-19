@@ -1,5 +1,5 @@
 mod game;
-mod state;
+mod store;
 
 pub use game::Game;
-pub use state::GameState;
+pub use store::Store;

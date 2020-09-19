@@ -1,17 +1,20 @@
-pub struct Game {
-  pub state: GameState
-}
+use crate::component::{Component, MainMenu};
+use crate::core::Store;
+use console::Term;
+
+pub struct Game {}
 
 impl Game {
-  pub fn new(state: &mut GameState) -> Self {
-    Self { state }
-  }
-  pub fn start() {
+  pub fn start(store: &mut Store) {
     println!("Добро пожаловать");
 
+    let mut component: Box<dyn Component> = Box::new(MainMenu::default());
+
     loop {
-      self.component.run(self);
-      Term::stdout().clear_screen().expect("Ошибка отчистки экрана");
+      component = component.run(store);
+      Term::stdout()
+        .clear_screen()
+        .expect("Ошибка отчистки экрана");
     }
   }
 }
