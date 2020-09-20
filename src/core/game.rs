@@ -1,20 +1,12 @@
-use crate::component::{Component, MainMenu};
-use crate::core::Store;
-use console::Term;
+use crate::core::{Controller, Store};
 
 pub struct Game {}
 
 impl Game {
-  pub fn start(store: &mut Store) {
-    println!("Добро пожаловать");
-
-    let mut component: Box<dyn Component> = Box::new(MainMenu::default());
-
+  pub fn start(store: &mut Store, controller: &mut Controller) {
     loop {
-      component = component.run(store);
-      Term::stdout()
-        .clear_screen()
-        .expect("Ошибка отчистки экрана");
+      controller.clear();
+      controller.step(store);
     }
   }
 }

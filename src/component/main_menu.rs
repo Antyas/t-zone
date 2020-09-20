@@ -1,6 +1,6 @@
 use crate::component::Component;
 use crate::core::Store;
-use dialoguer::Select;
+use dialoguer::{Input, Select};
 
 pub enum MainMenu {
   Root,
@@ -15,19 +15,18 @@ impl Default for MainMenu {
 }
 
 impl Component for MainMenu {
-  fn run(&mut self, state: &mut Store) -> Box<dyn Component> {
-    loop {
-      match self {
-        MainMenu::Root => Box::new(self.root()),
-        MainMenu::NewGame => Box::new(self.new_game(state)),
-        _ => Box::new(self.root()),
-      };
-    }
+  fn run(&mut self, store: &mut Store) -> Box<dyn Component> {
+    let component = match self {
+      MainMenu::Root => Box::new(self.root()),
+      MainMenu::NewGame => Box::new(self.new_game(store)),
+      _ => Box::new(self.root()),
+    };
+    component
   }
 }
 
 impl MainMenu {
-  fn root(&mut self) {
+  fn root(&mut self) -> Self {
     let items = ["Новая игра", "Загрузить сохранение"];
 
     let index: usize = Select::new()
@@ -36,14 +35,20 @@ impl MainMenu {
       .default(0)
       .interact()
       .expect("Ошибка выбора пункта меню");
+
     match index {
-      0 => *self = MainMenu::NewGame,
-      1 => *self = MainMenu::LoadGame,
-      _ => *self = MainMenu::Root,
-    };
+      0 => MainMenu::NewGame,
+      1 => MainMenu::LoadGame,
+      _ => MainMenu::Root,
+    }
   }
 
-  fn new_game(&mut self, state: &mut Store) {
-    state.hero.init();
+  fn new_game(&mut self, store: &mut Store) -> Self {
+    store.hero.name = Input::new()
+      .with_prompt("Имя персоонажа")
+      .interact()
+      .expect("Ошибка заполнения имени");
+
+    MainMenu::Root
   }
 }

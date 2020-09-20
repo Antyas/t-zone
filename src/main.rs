@@ -2,9 +2,10 @@ mod component;
 mod core;
 mod entity;
 
-use crate::core::{Game, Store};
+use crate::core::{Controller, Game, Store};
 
 fn main() {
   let mut store = Store::new();
-  Game::start(&mut store);
+  let mut controller = Controller::new();
+  Game::start(&mut store, &mut controller);
 }
