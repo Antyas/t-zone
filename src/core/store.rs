@@ -1,12 +1,13 @@
-use crate::entity::Hero;
+use crate::entity::Character;
 
+#[derive(Debug)]
 pub struct Store {
-  pub hero: Hero,
+  pub hero: Character,
 }
 
 impl Store {
   pub fn new() -> Self {
-    let hero: Hero = Default::default();
+    let hero: Character = Default::default();
     Self { hero }
   }
 }

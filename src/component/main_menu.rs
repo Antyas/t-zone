@@ -6,6 +6,7 @@ pub enum MainMenu {
   Root,
   LoadGame,
   NewGame,
+  Debug,
 }
 
 impl Default for MainMenu {
@@ -16,18 +17,18 @@ impl Default for MainMenu {
 
 impl Component for MainMenu {
   fn run(&mut self, store: &mut Store) -> Box<dyn Component> {
-    let component = match self {
+    match self {
       MainMenu::Root => Box::new(self.root()),
       MainMenu::NewGame => Box::new(self.new_game(store)),
+      MainMenu::Debug => Box::new(self.debug(store)),
       _ => Box::new(self.root()),
-    };
-    component
+    }
   }
 }
 
 impl MainMenu {
   fn root(&mut self) -> Self {
-    let items = ["Новая игра", "Загрузить сохранение"];
+    let items = ["Новая игра", "Загрузить сохранение", "Debug"];
 
     let index: usize = Select::new()
       .with_prompt("Меню")
@@ -39,6 +40,7 @@ impl MainMenu {
     match index {
       0 => MainMenu::NewGame,
       1 => MainMenu::LoadGame,
+      2 => MainMenu::Debug,
       _ => MainMenu::Root,
     }
   }
@@ -46,6 +48,17 @@ impl MainMenu {
   fn new_game(&mut self, store: &mut Store) -> Self {
     store.hero.name = Input::new()
       .with_prompt("Имя персоонажа")
+      .interact()
+      .expect("Ошибка заполнения имени");
+
+    MainMenu::Root
+  }
+
+  fn debug(&mut self, store: &mut Store) -> Self {
+    println!("{:?}", store);
+
+    let x: String = Input::new()
+      .with_prompt("Ожидание ввода любого символа")
       .interact()
       .expect("Ошибка заполнения имени");
 

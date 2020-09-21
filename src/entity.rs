@@ -1,3 +1,3 @@
-mod hero;
+mod character;
 
-pub use hero::Hero;
+pub use character::Character;
