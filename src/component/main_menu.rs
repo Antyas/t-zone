@@ -1,6 +1,7 @@
 use crate::component::Component;
 use crate::core::Store;
-use dialoguer::{Input, Select};
+use crate::content::Race;
+use dialoguer::{ Input, Select };
 
 pub enum MainMenu {
   Root,
@@ -16,7 +17,7 @@ impl Default for MainMenu {
 }
 
 impl Component for MainMenu {
-  fn run(&mut self, store: &mut Store) -> Box<dyn Component> {
+  fn draw(&mut self, store: &mut Store) -> Box<dyn Component> {
     match self {
       MainMenu::Root => Box::new(self.root()),
       MainMenu::NewGame => Box::new(self.new_game(store)),
@@ -51,13 +52,26 @@ impl MainMenu {
       .interact()
       .expect("Ошибка заполнения имени");
 
+    let races = ["Человек"];
+
+    let race_index: usize = Select::new()
+      .with_prompt("Раса персонажа")
+      .items(&races)
+      .default(0)
+      .interact()
+      .expect("Ошибка выбора расы");
+
+    store.hero.race = match race_index {
+      _ => Race::Human(String::from("Человек")),
+    };
+
     MainMenu::Root
   }
 
   fn debug(&mut self, store: &mut Store) -> Self {
     println!("{:?}", store);
 
-    let x: String = Input::new()
+    let _: String = Input::new()
       .with_prompt("Ожидание ввода любого символа")
       .interact()
       .expect("Ошибка заполнения имени");
